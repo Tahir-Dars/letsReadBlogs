@@ -12,7 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
+POSTGRES_PASSWORD=your_password
 ### IntelliJ IDEA ###
 .idea
 *.iws
