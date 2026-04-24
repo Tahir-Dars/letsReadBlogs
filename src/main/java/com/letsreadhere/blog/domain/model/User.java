@@ -1,4 +1,4 @@
-package com.letsreadhere.blog.model;
+package com.letsreadhere.blog.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
