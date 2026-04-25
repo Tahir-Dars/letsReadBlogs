@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "categoryItBelongsTo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Posts> posts;
+    private List<Posts> posts = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
