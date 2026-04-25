@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.action.internal.OrphanRemovalAction;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -31,7 +32,9 @@ public class Posts {
     @Column(unique = true, nullable = false, columnDefinition = "TEXT")
     private String content;
 
-//    private User author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
     @NotBlank
     @Column(nullable = false)

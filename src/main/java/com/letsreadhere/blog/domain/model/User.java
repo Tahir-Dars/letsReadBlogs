@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -42,7 +44,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    //    private List<Post> postList;
+    //wherever the "mappedBy" is used the other entity holds the relationship
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Posts> postList = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
