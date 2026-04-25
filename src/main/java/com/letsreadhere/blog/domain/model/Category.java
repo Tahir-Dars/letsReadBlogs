@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -25,8 +26,8 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    //List<Posts> posts;
-
+    @OneToMany(mappedBy = "categoryItBelongsTo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Posts> posts;
 
     @Override
     public boolean equals(Object o) {

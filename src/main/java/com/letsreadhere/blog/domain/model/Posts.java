@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.action.internal.OrphanRemovalAction;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -35,6 +34,10 @@ public class Posts {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category categoryItBelongsTo;
 
     @NotBlank
     @Column(nullable = false)
