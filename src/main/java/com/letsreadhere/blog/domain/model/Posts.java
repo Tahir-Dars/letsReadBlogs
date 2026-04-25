@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -47,4 +48,27 @@ public class Posts {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Posts posts = (Posts) o;
+        return Objects.equals(id, posts.id) && Objects.equals(title, posts.title) && Objects.equals(content, posts.content) && postStatus == posts.postStatus && Objects.equals(readingTime, posts.readingTime) && Objects.equals(createdAt, posts.createdAt) && Objects.equals(updatedAt, posts.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, postStatus, readingTime, createdAt, updatedAt);
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
