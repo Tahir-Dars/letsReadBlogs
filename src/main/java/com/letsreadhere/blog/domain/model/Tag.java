@@ -3,7 +3,9 @@ package com.letsreadhere.blog.domain.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,7 +19,9 @@ public class Tag {
     @Column(nullable = false, unique = true)
     private String name;
 
-    //List<Posts> posts;
+    //cascade is not used becasue we are not g
+    @ManyToMany(mappedBy = "tags")
+    private Set<Posts> posts = new HashSet<>();
 
 
     @Override
