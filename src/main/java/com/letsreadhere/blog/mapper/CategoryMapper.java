@@ -22,7 +22,7 @@ public interface CategoryMapper {
 
     @Named("calculatedPostCount")
     default long calculatedPostCount(List<Posts> posts) {
-        if (posts.isEmpty()) {
+        if (posts==null) {
             return 0;
         }
         return posts.stream()

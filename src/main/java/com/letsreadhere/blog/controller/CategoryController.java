@@ -8,7 +8,7 @@ import com.letsreadhere.blog.mapper.CategoryMapper;
 import com.letsreadhere.blog.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +37,8 @@ public class CategoryController {
     ) {
         Category createCategory = categoryMapper.DtoToEntity(categoryCreationDto);
         CategoryDto categoryDto = categoryMapper.entityToDto(categoryService.createACategory(createCategory));
-        return ResponseEntity.accepted().body(categoryDto);
+        return new ResponseEntity<>(
+                categoryDto, HttpStatus.CREATED
+        );
     }
 }
