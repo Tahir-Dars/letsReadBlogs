@@ -18,9 +18,20 @@ public class ErrorController {
         log.error("The Exception is ", exception);
         ApiErrorResponse response = ApiErrorResponse.builder().
                 status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message("An Unexpected error has occured").build();
+                .message("An Unexpected error has occurred").build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException argumentException) {
+        log.error("IllegalArgumentException", argumentException);
+        ApiErrorResponse response = ApiErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("The values you sent are invalid")
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
+
+
