@@ -2,6 +2,7 @@ package com.letsreadhere.blog.mapper;
 
 
 import com.letsreadhere.blog.domain.PostStatus;
+import com.letsreadhere.blog.domain.dto.CategoryCreationDto;
 import com.letsreadhere.blog.domain.dto.CategoryDto;
 import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.domain.model.Posts;
@@ -16,6 +17,8 @@ import java.util.List;
 public interface CategoryMapper {
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "calculatedPostCount")
     CategoryDto entityToDto(Category category);
+
+    Category DtoToEntity(CategoryCreationDto categoryCreationDto);
 
     @Named("calculatedPostCount")
     default long calculatedPostCount(List<Posts> posts) {
