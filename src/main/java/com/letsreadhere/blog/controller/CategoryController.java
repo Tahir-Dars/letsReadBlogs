@@ -1,15 +1,16 @@
 package com.letsreadhere.blog.controller;
 
 
+import com.letsreadhere.blog.domain.dto.CategoryCreationDto;
 import com.letsreadhere.blog.domain.dto.CategoryDto;
+import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.mapper.CategoryMapper;
 import com.letsreadhere.blog.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +29,14 @@ public class CategoryController {
                 .toList();
         return ResponseEntity.ok(categories);
 
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoryDto> createCategory(
+            @Valid @RequestBody CategoryCreationDto categoryCreationDto
+    ) {
+        Category createCategory = categoryMapper.DtoToEntity(categoryCreationDto);
+        CategoryDto categoryDto = categoryMapper.entityToDto(categoryService.createACategory(createCategory));
+        return ResponseEntity.accepted().body(categoryDto);
     }
 }
