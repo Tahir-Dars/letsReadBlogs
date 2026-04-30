@@ -39,7 +39,8 @@ public class CategoryServiceExe implements CategoryService {
                 categoryRepository.deleteById(uuid);
                 return;
             }
+            throw new IllegalStateException("Category has posts published !!");
         }
-        throw new IllegalStateException("Category has posts published !!");
+            throw new IllegalArgumentException("No Such Category Exist");
     }
 }

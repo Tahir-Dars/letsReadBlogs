@@ -28,9 +28,18 @@ public class ErrorController {
         log.error("IllegalArgumentException", argumentException);
         ApiErrorResponse response = ApiErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .message("The values you sent are invalid")
+                .message(argumentException.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiErrorResponse> handIllegalStateException(IllegalStateException illegalStateException) {
+        ApiErrorResponse response = ApiErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(illegalStateException.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 }
 
