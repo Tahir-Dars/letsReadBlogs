@@ -1,7 +1,8 @@
-package com.letsreadhere.blog.service;
+package com.letsreadhere.blog.service.Implementations;
 
 import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.repository.CategoryRepository;
+import com.letsreadhere.blog.service.CategoryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
