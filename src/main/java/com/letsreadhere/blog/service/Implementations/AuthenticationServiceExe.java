@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,6 +50,18 @@ public class AuthenticationServiceExe implements AuthenticationService {
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiryMs))
                 .signWith(getSigningKey())
                 .compact();
+    }
+
+    @Override
+    public UserDetails validateToken(String token) {
+        String username = extractUsernameFromToken(token);
+        return userDetailsService.loadUserByUsername(username);
+    }
+
+    private String extractUsernameFromToken(String token) {
+        return Jwts.parser().verifyWith((SecretKey) getSigningKey())
+                .build().parseSignedClaims(token)
+                .getPayload().getSubject();
     }
 
     private Key getSigningKey() {
