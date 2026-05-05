@@ -1,5 +1,6 @@
 package com.letsreadhere.blog.config;
 
+import com.letsreadhere.blog.domain.model.User;
 import com.letsreadhere.blog.repository.UserRepository;
 import com.letsreadhere.blog.security.BlogUserDetailsService;
 import com.letsreadhere.blog.security.JwtAuthenticationFilter;
@@ -28,7 +29,18 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new BlogUserDetailsService(userRepository);
+        BlogUserDetailsService blogUserDetailsService = new BlogUserDetailsService(userRepository);
+        String email = "user@test.com";
+        userRepository.findByEmail(email).orElseGet(() ->
+        {
+            User user = User.builder()
+                    .name("Test User")
+                    .email(email)
+                    .password(passwordEncoder().encode("password"))
+                    .build();
+            return userRepository.save(user);
+        });
+        return blogUserDetailsService;
     }
 
     @Bean
