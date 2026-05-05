@@ -29,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = extractToken(request);
             if (token == null || token.isBlank()) {
+                filterChain.doFilter(request, response);
                 return;
             }
             UserDetails userDetails = authenticationService.validateToken(token);
