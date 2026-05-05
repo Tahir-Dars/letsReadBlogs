@@ -1,5 +1,9 @@
 package com.letsreadhere.blog.config;
 
+import com.letsreadhere.blog.repository.UserRepository;
+import com.letsreadhere.blog.security.BlogUserDetailsService;
+import com.letsreadhere.blog.security.JwtAuthenticationFilter;
+import com.letsreadhere.blog.service.AuthenticationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,15 +11,30 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public JwtAuthenticationFilter authenticationFilter
+            (AuthenticationService authenticationService) {
+        return new JwtAuthenticationFilter(authenticationService);
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return new BlogUserDetailsService(userRepository);
+    }
+
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(
+            HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter)
+            throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
@@ -25,7 +44,8 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
