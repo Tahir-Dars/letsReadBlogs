@@ -2,7 +2,6 @@ package com.letsreadhere.blog.service.Implementations;
 
 import com.letsreadhere.blog.service.AuthenticationService;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +22,8 @@ public class AuthenticationServiceExe implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final Key key = Jwts.SIG.HS256.key().build();
 
-    @Value("${jwt.secret}")
-    private String secretKey;
 
     @Value("${spring.app.jwtExpiryTimeInMs}")
     private Long jwtExpiryMs;
@@ -65,7 +63,6 @@ public class AuthenticationServiceExe implements AuthenticationService {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = secretKey.getBytes();
-        return Keys.hmacShaKeyFor(keyBytes);
+        return key;
     }
 }
