@@ -28,19 +28,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = extractToken(request);
-            if (token == null || token.isBlank()) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-            UserDetails userDetails = authenticationService.validateToken(token);
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            if (token != null) {
+                UserDetails userDetails = authenticationService.validateToken(token);
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-            if (userDetails instanceof BlogUserDetails) {
-                request.setAttribute("userId", ((BlogUserDetails) userDetails).getId());
+                if (userDetails instanceof BlogUserDetails) {
+                    request.setAttribute("userId", ((BlogUserDetails) userDetails).getId());
+                }
             }
+
         } catch (Exception e) {
             log.warn("Received an invalid auth Token");
         }
