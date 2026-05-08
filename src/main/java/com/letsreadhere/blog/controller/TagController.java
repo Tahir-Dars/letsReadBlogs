@@ -1,13 +1,14 @@
 package com.letsreadhere.blog.controller;
 
+import com.letsreadhere.blog.domain.dto.TagsCreationDto;
 import com.letsreadhere.blog.domain.dto.TagsResponse;
+import com.letsreadhere.blog.domain.model.Tag;
 import com.letsreadhere.blog.mapper.TagMapper;
 import com.letsreadhere.blog.service.TagsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +25,15 @@ public class TagController {
         List<TagsResponse> tagList = tagsService.getTags().stream()
                 .map(tagMapper::toTagResponse).toList();
         return ResponseEntity.ok(tagList);
+    }
+
+    @PostMapping
+    public ResponseEntity<List<TagsResponse>> createATag(@RequestBody TagsCreationDto dto) {
+       List<Tag> savedTags= tagsService.createTag(dto.getNames()) ;
+       List<TagsResponse> tagsResponses=savedTags.stream().map(tagMapper::toTagResponse).toList();
+       return new ResponseEntity<>(
+               tagsResponses,
+               HttpStatus.CREATED
+       );
     }
 }
