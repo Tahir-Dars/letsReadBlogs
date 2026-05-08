@@ -18,4 +18,27 @@ public class TagsServiceExe implements TagsService {
     public List<Tag> getTags() {
         return tagsRepository.findAllWithPostCount();
     }
+
+    @Transactional
+    @Override
+    public List<Tag> createTag(Set<String> tagNames) {
+        List<Tag> existingTags = tagsRepository.findByNameIn(tagNames);
+        Set<String> existingTagNames = existingTags.stream().map(Tag::getName).collect(Collectors.toSet());
+        List<Tag> newTags = tagNames.stream()
+                .filter(name -> !existingTagNames.contains(name))
+                .map(name -> Tag.builder()
+                        .name(name)
+                        .posts(new HashSet<>())
+                        .build()
+                ).toList();
+        List<Tag> savedTags = new ArrayList<>();
+        if (!newTags.isEmpty()) {
+            savedTags = tagsRepository.saveAll(newTags);
+        }
+
+        savedTags.addAll(existingTags);
+        return savedTags;
+    }
+
+
 }
