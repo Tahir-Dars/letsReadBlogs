@@ -33,7 +33,7 @@ public class TagController {
        List<TagsResponse> tagsResponses=savedTags.stream().map(tagMapper::toTagResponse).toList();
        return new ResponseEntity<>(
                tagsResponses,
-               HttpStatus.CREATED
+               HttpStatus. CREATED
        );
     }
 }
