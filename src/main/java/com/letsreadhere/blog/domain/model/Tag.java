@@ -2,12 +2,14 @@ package com.letsreadhere.blog.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "Tags")
 public class Tag {
