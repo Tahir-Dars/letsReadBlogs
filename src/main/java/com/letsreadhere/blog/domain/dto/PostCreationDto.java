@@ -18,6 +18,7 @@ public class PostCreationDto {
     private UUID uuid;
     private String title;
     private String Content;
+    private AuthorDto authorDto;
     private CategoryDto categoryDto;
     private Set<TagsResponse> tags;
     private Integer readingTime;
