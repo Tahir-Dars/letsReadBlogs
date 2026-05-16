@@ -1,9 +1,12 @@
 package com.letsreadhere.blog.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,6 +17,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "Tags")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
