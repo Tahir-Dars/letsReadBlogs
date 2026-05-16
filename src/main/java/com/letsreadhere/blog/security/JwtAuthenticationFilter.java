@@ -26,6 +26,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        log.info("Incoming request: {} {}", request.getMethod(), request.getRequestURI());
+        log.info("Authorization header: {}", request.getHeader("Authorization"));// to view that headers is being reached at the internalFilter
         try {
             String token = extractToken(request);
             if (token != null) {
