@@ -3,14 +3,13 @@ package com.letsreadhere.blog.controller;
 
 import com.letsreadhere.blog.domain.dto.PostResponseDto;
 import com.letsreadhere.blog.domain.model.Posts;
+import com.letsreadhere.blog.domain.model.User;
 import com.letsreadhere.blog.mapper.PostMapper;
 import com.letsreadhere.blog.service.PostService;
+import com.letsreadhere.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +21,7 @@ public class PostController {
 
     private final PostService postService;
     private final PostMapper postMapper;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts(
@@ -31,6 +31,16 @@ public class PostController {
         List<Posts> postsList = postService.getAllPosts(categoryId, tagId);
         List<PostResponseDto> postResponseDto = postsList.stream().map(postMapper::PostToPostDto).
                 toList();
+        return ResponseEntity.ok(postResponseDto);
+    }
+
+    @GetMapping("/drafts")
+    public ResponseEntity<List<PostResponseDto>> getDraftedPosts(
+            @RequestAttribute("userId") UUID userId
+    ) {
+        User loggedUser = userService.getUserById(userId);
+        List<Posts> draftPosts = postService.getDraftPosts(loggedUser);
+        List<PostResponseDto> postResponseDto = draftPosts.stream().map(postMapper::PostToPostDto).toList();
         return ResponseEntity.ok(postResponseDto);
     }
 }
