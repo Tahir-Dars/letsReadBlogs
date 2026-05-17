@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostCreationDto {
+public class PostResponseDto {
     private UUID uuid;
     private String title;
     private String Content;
