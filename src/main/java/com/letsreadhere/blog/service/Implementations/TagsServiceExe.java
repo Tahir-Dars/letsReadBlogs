@@ -3,6 +3,7 @@ package com.letsreadhere.blog.service.Implementations;
 import com.letsreadhere.blog.domain.model.Tag;
 import com.letsreadhere.blog.repository.TagsRepository;
 import com.letsreadhere.blog.service.TagsService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,13 @@ public class TagsServiceExe implements TagsService {
             return optionalTag.get();
         }
         throw new IllegalArgumentException("This ID does not exist !!");
+    }
+
+    @Override
+    public Tag getTagById(UUID uuid) {
+        return tagsRepository.findById(uuid)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Category not found with ID: " + uuid));
     }
 
 }
