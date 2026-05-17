@@ -4,6 +4,7 @@ import com.letsreadhere.blog.domain.PostStatus;
 import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.domain.model.Posts;
 import com.letsreadhere.blog.domain.model.Tag;
+import com.letsreadhere.blog.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,6 @@ public interface PostRepository extends JpaRepository<Posts, UUID> {
     List<Posts> findAllByPostStatusAndTags(PostStatus status, Tag tags);
 
     List<Posts> findAllByPostStatus(PostStatus Status);
+
+    List<Posts> findAllByAuthorAndPostStatus(User author, PostStatus postStatus);
 }
