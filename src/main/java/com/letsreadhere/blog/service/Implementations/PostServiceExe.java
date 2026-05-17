@@ -4,6 +4,7 @@ import com.letsreadhere.blog.domain.PostStatus;
 import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.domain.model.Posts;
 import com.letsreadhere.blog.domain.model.Tag;
+import com.letsreadhere.blog.domain.model.User;
 import com.letsreadhere.blog.repository.PostRepository;
 import com.letsreadhere.blog.service.CategoryService;
 import com.letsreadhere.blog.service.PostService;
@@ -29,7 +30,7 @@ public class PostServiceExe implements PostService {
         if (categoryId != null && tagId != null) {
             Category category = categoryService.getCategoryById(categoryId);
             Tag tag = tagsService.getTagById(tagId);
-            return postRepository.findAllByPostStatusAndCategoryItBelongsToAndTags(
+            return postRepository.findAllByPostStatusAndCategoryItBelongsToAndTagsContaining(
                     PostStatus.PUBLISHED,
                     category,
                     tag
@@ -44,12 +45,17 @@ public class PostServiceExe implements PostService {
         }
         if (tagId != null) {
             Tag tag = tagsService.getTagById(tagId);
-            return postRepository.findAllByPostStatusAndTags(
+            return postRepository.findAllByPostStatusAndTagsContaining(
                     PostStatus.PUBLISHED,
                     tag
             );
         }
 
         return postRepository.findAllByPostStatus(PostStatus.PUBLISHED);
+    }
+
+    @Override
+    public List<Posts> getDraftPosts(User user) {
+        return postRepository.findAllByAuthorAndPostStatus(user, PostStatus.DRAFT);
     }
 }
