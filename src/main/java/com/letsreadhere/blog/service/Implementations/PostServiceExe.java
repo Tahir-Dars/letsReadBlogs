@@ -29,7 +29,7 @@ public class PostServiceExe implements PostService {
         if (categoryId != null && tagId != null) {
             Category category = categoryService.getCategoryById(categoryId);
             Tag tag = tagsService.getTagById(tagId);
-            return postRepository.findAllByPostStatusAndCategoryItBelongsToAndTagsContaining(
+            return postRepository.findAllByPostStatusAndCategoryItBelongsToAndTags(
                     PostStatus.PUBLISHED,
                     category,
                     tag
@@ -37,14 +37,14 @@ public class PostServiceExe implements PostService {
         }
         if (categoryId != null) {
             Category category = categoryService.getCategoryById(categoryId);
-            return postRepository.findAllByPostStatusAndCategoryItBelongsToContaining(
+            return postRepository.findAllByPostStatusAndCategoryItBelongsTo(
                     PostStatus.PUBLISHED,
                     category
             );
         }
         if (tagId != null) {
             Tag tag = tagsService.getTagById(tagId);
-            return postRepository.findAllByPostStatusAndTagsContaining(
+            return postRepository.findAllByPostStatusAndTags(
                     PostStatus.PUBLISHED,
                     tag
             );
