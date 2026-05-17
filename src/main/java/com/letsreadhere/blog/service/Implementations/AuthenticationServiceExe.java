@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,11 +21,13 @@ public class AuthenticationServiceExe implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
-    private final Key key = Jwts.SIG.HS256.key().build();
 
 
     @Value("${spring.app.jwtExpiryTimeInMs}")
     private Long jwtExpiryMs;
+
+    @Value("${spring.app.jwtScret}")
+    private String jwtSecret;
 
     @Override
     public UserDetails authenticateUser(String email, String password) {
@@ -57,12 +58,13 @@ public class AuthenticationServiceExe implements AuthenticationService {
     }
 
     private String extractUsernameFromToken(String token) {
-        return Jwts.parser().verifyWith((SecretKey) getSigningKey())
+        return Jwts.parser().verifyWith(getSigningKey())
                 .build().parseSignedClaims(token)
                 .getPayload().getSubject();
     }
 
-    private Key getSigningKey() {
-        return key;
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = java.util.Base64.getDecoder().decode(jwtSecret);
+        return io.jsonwebtoken.security.Keys.hmacShaKeyFor(keyBytes);
     }
 }
