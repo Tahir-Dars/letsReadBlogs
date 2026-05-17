@@ -43,7 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            log.warn("Received an invalid auth Token");
+            log.warn("Received an invalid auth token. type={}, message={}",
+                    e.getClass().getSimpleName(),
+                    e.getMessage());
         }
         filterChain.doFilter(request, response);
     }
