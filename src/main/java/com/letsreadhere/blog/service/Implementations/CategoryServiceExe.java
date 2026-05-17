@@ -3,6 +3,7 @@ package com.letsreadhere.blog.service.Implementations;
 import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.repository.CategoryRepository;
 import com.letsreadhere.blog.service.CategoryService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,12 @@ public class CategoryServiceExe implements CategoryService {
             }
             throw new IllegalStateException("Category has posts published !!");
         }
-            throw new IllegalArgumentException("No Such Category Exist");
+        throw new IllegalArgumentException("No Such Category Exist");
+    }
+
+    @Override
+    public Category getCategoryById(UUID uuid) {
+        return categoryRepository.findById(uuid).orElseThrow(() ->
+                new EntityNotFoundException("Category not found with ID: " + uuid));
     }
 }
