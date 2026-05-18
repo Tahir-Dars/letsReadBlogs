@@ -49,7 +49,7 @@ public class Posts {
     )
     private Set<Tag> tags = new HashSet<>();
 
-    @NotBlank
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
@@ -57,10 +57,10 @@ public class Posts {
     @Column(nullable = false)
     private Integer readingTime;
 
-    @NotBlank
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
-    @NotBlank
+
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
