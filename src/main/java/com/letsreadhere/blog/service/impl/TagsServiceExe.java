@@ -1,4 +1,4 @@
-package com.letsreadhere.blog.service.Implementations;
+package com.letsreadhere.blog.service.impl;
 
 import com.letsreadhere.blog.domain.model.Tag;
 import com.letsreadhere.blog.repository.TagsRepository;
@@ -61,6 +61,15 @@ public class TagsServiceExe implements TagsService {
         return tagsRepository.findById(uuid)
                 .orElseThrow(() ->
                         new EntityNotFoundException("Category not found with ID: " + uuid));
+    }
+
+    @Override
+    public List<Tag> getTagByIds(Set<UUID> uuids) {
+        List<Tag> foundTags = tagsRepository.findAllById(uuids);
+        if (foundTags.size() != uuids.size()) {
+            throw new EntityNotFoundException("Not All specified IDs exist !!");
+        }
+        return foundTags;
     }
 
 }
