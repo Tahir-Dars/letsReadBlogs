@@ -1,5 +1,7 @@
 package com.letsreadhere.blog.mapper;
 
+import com.letsreadhere.blog.domain.PostCreationRequest;
+import com.letsreadhere.blog.domain.dto.PostCreationDto;
 import com.letsreadhere.blog.domain.dto.PostResponseDto;
 import com.letsreadhere.blog.domain.model.Posts;
 import org.mapstruct.Mapper;
@@ -13,4 +15,6 @@ public interface PostMapper {
     @Mapping(source = "categoryItBelongsTo", target = "categoryDto")
     @Mapping(source = "tags", target = "tags")
     PostResponseDto PostToPostDto(Posts posts);
+
+    PostCreationRequest dtoToSimpleRequest(PostCreationDto dto);
 }
