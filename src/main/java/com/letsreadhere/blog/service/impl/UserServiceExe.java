@@ -1,4 +1,4 @@
-package com.letsreadhere.blog.service.Implementations;
+package com.letsreadhere.blog.service.impl;
 
 import com.letsreadhere.blog.domain.model.User;
 import com.letsreadhere.blog.repository.UserRepository;
