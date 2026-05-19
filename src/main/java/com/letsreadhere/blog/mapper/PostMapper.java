@@ -1,8 +1,10 @@
 package com.letsreadhere.blog.mapper;
 
 import com.letsreadhere.blog.domain.PostCreationRequest;
+import com.letsreadhere.blog.domain.UpdatePostRequest;
 import com.letsreadhere.blog.domain.dto.PostCreationDto;
 import com.letsreadhere.blog.domain.dto.PostResponseDto;
+import com.letsreadhere.blog.domain.dto.UpdatePostRequestDto;
 import com.letsreadhere.blog.domain.model.Posts;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,4 +19,6 @@ public interface PostMapper {
     PostResponseDto PostToPostDto(Posts posts);
 
     PostCreationRequest dtoToSimpleRequest(PostCreationDto dto);
+
+    UpdatePostRequest dtoToSimpleRequestForUpdate(UpdatePostRequestDto dto);
 }
