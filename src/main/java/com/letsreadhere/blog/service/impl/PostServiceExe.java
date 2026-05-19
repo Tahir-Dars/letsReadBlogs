@@ -112,6 +112,13 @@ public class PostServiceExe implements PostService {
         return postRepository.save(oldPost);
     }
 
+    @Override
+    public Posts getPostByID(UUID uuid) {
+        return  postRepository.findById(uuid).orElseThrow(
+                ()->new EntityNotFoundException("Post not found with ID: "+uuid)
+        );
+    }
+
     private Integer calculatedReadingTime(String content) {
         if (content == null || content.isEmpty()) {
             return 0;
