@@ -2,13 +2,16 @@ package com.letsreadhere.blog.controller;
 
 
 import com.letsreadhere.blog.domain.PostCreationRequest;
+import com.letsreadhere.blog.domain.UpdatePostRequest;
 import com.letsreadhere.blog.domain.dto.PostCreationDto;
 import com.letsreadhere.blog.domain.dto.PostResponseDto;
+import com.letsreadhere.blog.domain.dto.UpdatePostRequestDto;
 import com.letsreadhere.blog.domain.model.Posts;
 import com.letsreadhere.blog.domain.model.User;
 import com.letsreadhere.blog.mapper.PostMapper;
 import com.letsreadhere.blog.service.PostService;
 import com.letsreadhere.blog.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +52,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
-            @RequestBody PostCreationDto postCreationDto,
+            @Valid @RequestBody PostCreationDto postCreationDto,
             @RequestAttribute("userId") UUID uuid
     ) {
         User loggedInUser = userService.getUserById(uuid);
@@ -58,5 +61,18 @@ public class PostController {
         PostResponseDto createdPostResponse = postMapper.PostToPostDto(postCreated);
 
         return new ResponseEntity<>(createdPostResponse, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PostResponseDto> UpdatePost(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdatePostRequestDto updatePostRequestDto
+    ) {
+        UpdatePostRequest updatePostRequest = postMapper.
+                dtoToSimpleRequestForUpdate(updatePostRequestDto);
+        Posts updatedposts = postService.updatePost(updatePostRequest, id);
+        PostResponseDto responseDto = postMapper.PostToPostDto(updatedposts);
+
+        return ResponseEntity.ok(responseDto);
     }
 }
