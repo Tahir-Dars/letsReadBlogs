@@ -15,9 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class PostResponseDto {
-    private UUID uuid;
+    private UUID id;
     private String title;
-    private String Content;
+    private String content;
     private AuthorDto authorDto;
     private CategoryDto categoryDto;
     private Set<TagsResponse> tags;

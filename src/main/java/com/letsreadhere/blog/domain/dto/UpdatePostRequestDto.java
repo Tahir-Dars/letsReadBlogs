@@ -20,7 +20,7 @@ import java.util.UUID;
 public class UpdatePostRequestDto {
 
     @NotNull(message = "Post ID is required")
-    private UUID uuid;
+    private UUID id;
 
     @NotBlank
     @Size(min = 3, max = 200, message = "Title must be between {min} and {max}")
@@ -38,6 +38,6 @@ public class UpdatePostRequestDto {
     private Set<UUID> tagIds = new HashSet<>();
 
     @NotNull(message = "PostStatus is required")
-    private PostStatus postStatus;
+    private PostStatus status;
 
 }
