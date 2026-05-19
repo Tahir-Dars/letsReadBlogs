@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdatePostRequest {
+public class UpdatePostRequestDto {
 
     @NotNull(message = "Post ID is required")
     private UUID uuid;
