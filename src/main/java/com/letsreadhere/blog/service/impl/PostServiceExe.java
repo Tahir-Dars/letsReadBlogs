@@ -114,9 +114,15 @@ public class PostServiceExe implements PostService {
 
     @Override
     public Posts getPostByID(UUID uuid) {
-        return  postRepository.findById(uuid).orElseThrow(
-                ()->new EntityNotFoundException("Post not found with ID: "+uuid)
+        return postRepository.findById(uuid).orElseThrow(
+                () -> new EntityNotFoundException("Post not found with ID: " + uuid)
         );
+    }
+
+    @Override
+    public void deletePost(UUID uuid) {
+        Posts post = getPostByID(uuid);
+        postRepository.delete(post);
     }
 
     private Integer calculatedReadingTime(String content) {
