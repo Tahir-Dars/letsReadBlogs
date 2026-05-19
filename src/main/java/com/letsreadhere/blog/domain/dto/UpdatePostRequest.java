@@ -1,0 +1,43 @@
+package com.letsreadhere.blog.domain.dto;
+
+import com.letsreadhere.blog.domain.PostStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UpdatePostRequest {
+
+    @NotNull(message = "Post ID is required")
+    private UUID uuid;
+
+    @NotBlank
+    @Size(min = 3, max = 200, message = "Title must be between {min} and {max}")
+    private String title;
+
+    @NotBlank
+    @Size(min = 10, max = 50000, message = "Content must be between {min} and {max}")
+    private String content;
+
+    @NotNull(message = "CategoryId cant be null")
+    private UUID categoryId;
+
+    @Builder.Default
+    @Size(max = 10, message = "Maximum {max} tags allowed ")
+    private Set<UUID> tagIds = new HashSet<>();
+
+    @NotNull(message = "PostStatus is required")
+    private PostStatus postStatus;
+
+}
