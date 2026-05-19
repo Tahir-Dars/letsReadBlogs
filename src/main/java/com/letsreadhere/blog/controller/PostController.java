@@ -78,10 +78,18 @@ public class PostController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<PostResponseDto> getPostByID(
-            @PathVariable  UUID id
+            @PathVariable UUID id
     ) {
         Posts post = postService.getPostByID(id);
         PostResponseDto responseDto = postMapper.PostToPostDto(post);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PostResponseDto> deleteThePost(
+            @PathVariable UUID id
+    ) {
+        postService.deletePost(id);
+        return ResponseEntity.noContent().build();
     }
 }
