@@ -2,6 +2,7 @@ package com.letsreadhere.blog.service.impl;
 
 import com.letsreadhere.blog.domain.PostCreationRequest;
 import com.letsreadhere.blog.domain.PostStatus;
+import com.letsreadhere.blog.domain.UpdatePostRequest;
 import com.letsreadhere.blog.domain.model.Category;
 import com.letsreadhere.blog.domain.model.Posts;
 import com.letsreadhere.blog.domain.model.Tag;
@@ -10,6 +11,7 @@ import com.letsreadhere.blog.repository.PostRepository;
 import com.letsreadhere.blog.service.CategoryService;
 import com.letsreadhere.blog.service.PostService;
 import com.letsreadhere.blog.service.TagsService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +85,31 @@ public class PostServiceExe implements PostService {
         newPost.setPostStatus(PostStatus.PUBLISHED);
 
         return postRepository.save(newPost);
+    }
+
+    @Override
+    @Transactional
+    public Posts updatePost(UpdatePostRequest request, UUID uuid) {
+        Posts oldPost = postRepository.findById(uuid).
+                orElseThrow(() -> new EntityNotFoundException("Post with ID " + uuid + " Not found"));
+
+        oldPost.setTitle(request.getTitle());
+        oldPost.setContent(request.getContent());
+        oldPost.setPostStatus(request.getPostStatus());
+        oldPost.setReadingTime(calculatedReadingTime(request.getContent()));
+
+        if (!oldPost.getCategoryItBelongsTo().getId().equals(request.getCategoryId())) {
+            Category newCategory = categoryService.getCategoryById(request.getCategoryId());
+            oldPost.setCategoryItBelongsTo(newCategory);
+        }
+
+        Set<UUID> tagIdsFromOldPost = oldPost.getTags().stream().map(Tag::getId).collect(Collectors.toSet());
+        Set<UUID> tagsIdsForNewPost = request.getTagIds();
+        if (tagIdsFromOldPost.equals(tagsIdsForNewPost)) {
+            List<Tag> newTags = tagsService.getTagByIds(tagsIdsForNewPost);
+            oldPost.setTags(new HashSet<>(newTags));
+        }
+        return postRepository.save(oldPost);
     }
 
     private Integer calculatedReadingTime(String content) {
