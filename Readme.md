@@ -4,6 +4,12 @@
 
 LetsReadBlogs is a blog platform for creating, organizing, and managing posts with authentication, categories, tags, and draft support. It solves the common need for a simple content publishing system where readers can browse public posts while authenticated users can create and manage their own content.
 
+## Live demo
+
+Watch the full-stack demo video: [View on LinkedIn](https://www.linkedin.com/posts/muhammadtahir32_springboot-java-react-ugcPost-7463122909448781826-HFXn?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEVCVtIBuOEiBAiH6C8e0NX4GsoFyOGAFaI)
+
+This demo showcases the full-stack implementation including the frontend interface, backend API, and database in action.
+
 ## 2. Project Structure
 
 The repository is organized as a standard Spring Boot application:
