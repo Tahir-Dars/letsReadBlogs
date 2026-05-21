@@ -108,3 +108,7 @@ Adminer is included as a lightweight database admin panel. It makes it easier to
 - Containerized local development environment with Docker Compose
 - Adminer access for database management
 
+## Deployment Status
+
+The frontend application and the containerized PostgreSQL database (with Adminer) have been successfully created and are functioning as intended; however, the backend has not yet been deployed to a production environment. Several deployment attempts were made, but they were not completed successfully due to limited experience with production deployment practices and ensuring safe deployment procedures. The backend will be deployed after the necessary understanding of secure, standard deployment workflows has been acquired and implemented. The project is fully developed and ready — it will become fully live once the backend deployment is completed.
+
